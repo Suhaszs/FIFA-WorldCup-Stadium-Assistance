@@ -1,6 +1,11 @@
-﻿import { useState, useRef, useEffect } from "react";
+﻿import React from 'react';
+import { debounce } from '../utils/helpers';
+import { useState, useRef, useEffect } from "react";
+import { debounce } from '../utils/helpers';
 import { Send, Loader2, Globe } from "lucide-react";
+import { debounce } from '../utils/helpers';
 import { chatApi } from "../services/api";
+import { debounce } from '../utils/helpers';
 
 const languages = [
   { code: "en", name: "English" },
@@ -19,6 +24,7 @@ const Chat = () => {
     },
   ]);
   const [input, setInput] = useState("");
+  const debouncedSetInput = debounce((value) => setInput(value), 300);
   const [isLoading, setIsLoading] = useState(false);
   const [language, setLanguage] = useState("en");
   const messagesEndRef = useRef(null);
@@ -32,6 +38,12 @@ const Chat = () => {
     scrollToBottom();
   }, [messages]);
 
+    /**
+   * Sends a message to the AI assistant
+   * @param {string} message - The user's message text
+   * @param {string} language - Language code (en, es, fr, ar)
+   * @returns {Promise<void>}
+   */
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -142,14 +154,14 @@ const Chat = () => {
             ref={inputRef}
             type="text"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => debouncedSetInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
+            placeholder="Type your message..." aria-label="Type your message to the AI assistant" aria-describedby="chat-help"
             className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
             disabled={isLoading}
           />
           <button
-            onClick={sendMessage}
+            onClick={sendMessage} aria-label="Send your message"
             disabled={isLoading || !input.trim()}
             className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
@@ -165,4 +177,10 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default React.memo(Chat);
+
+
+
+
+
+
