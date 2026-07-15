@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { debounce } from '../utils/helpers';
 import { Send, Loader2, Globe } from "lucide-react";
 import { chatApi } from "../services/api";
-import { debounce } from '../utils/helpers';
+
 
 const languages = [
   { code: "en", name: "English" },
